@@ -1,0 +1,136 @@
+A3COM0029-HOST-LOCATION DEFINITIONS ::= BEGIN
+
+
+	IMPORTS
+		OBJECT-TYPE FROM RFC-1212
+		TRAP-TYPE FROM RFC-1215
+		hostExtensions FROM A3COM0027-RMON-EXTENSIONS
+		;
+
+hostMacToPortTable OBJECT-TYPE
+      SYNTAX      SEQUENCE OF HostMacToPortEntry
+      ACCESS      not-accessible
+      STATUS      mandatory
+      DESCRIPTION "This table allows a management application to map a MAC 
+        address to one or more ports in a device. Note that it is perfectly 
+        possible for a MAC to reside on more than one port in the system if two 
+        segments are bridged."
+      ::= {hostExtensions 1}
+
+hostMacToPortEntry OBJECT-TYPE
+      SYNTAX      HostMacToPortEntry
+      ACCESS      not-accessible
+      STATUS      mandatory
+      DESCRIPTION ""
+      INDEX       {hostTopMacAddress,hostTopMacIndex}
+      ::= {hostMacToPortTable 1}
+
+HostMacToPortEntry ::= SEQUENCE {
+                  hostTopMacAddress          OCTET STRING,
+                  hostTopMacIndex            INTEGER,
+                  hostTopMacLocation         OBJECT IDENTIFIER
+                  }
+
+hostTopMacAddress OBJECT-TYPE
+      SYNTAX      OCTET STRING 
+      ACCESS      not-accessible
+      STATUS      mandatory
+      DESCRIPTION "This is the address of a MAC which is to be located in the 
+        stack. The address is a 48bit physical MAC address."
+      ::= {hostMacToPortEntry 1}
+
+hostTopMacIndex OBJECT-TYPE
+      SYNTAX      INTEGER 
+      ACCESS      not-accessible
+      STATUS      mandatory
+      DESCRIPTION "Because each MAC address may have been seen on multiple 
+        ports in the system, this index allows the management application to 
+        read all the ports which have seen the address. Note that the agent 
+        will 'mask' internal ports from the list so if an address is seen on 
+        one of the cascades then it will not appear in this table. This number 
+        is an arbitrary integer. To find all the ports do a get-next on MAC.0. 
+        Note that this operation involves significant searching within the 
+        agent and so will be slow. It will however be faster than the 
+        management application could achieve by using raw SNMP access to the 
+        underlying data."
+      ::= {hostMacToPortEntry 2}
+
+hostTopMacLocation OBJECT-TYPE
+      SYNTAX      OBJECT IDENTIFIER
+      ACCESS      read-only
+      STATUS      mandatory
+      DESCRIPTION "This object identifier 'points' to another MIB object which 
+        identifies a physical location within a device. In practice this can 
+        point to any location, however the application would then be faced with 
+        a potentially complicated decoding problem. To avoid this the object 
+        will point to one of a number of known locations, the list being 
+        extended in future to cope with additional types. Currently the 
+        identified values for this variable are:
+           rptrPortGroupIndex For a repeater port
+           ifIndex For a bridge port
+        Note that if an entry in the host table exists, but the source of that
+        address
+        is unknown the value of this object will be the NULL object identifier (
+        0.0)."
+      ::= {hostMacToPortEntry 3}
+
+hostPortToMacTable OBJECT-TYPE
+      SYNTAX      SEQUENCE OF HostPortToMacEntry
+      ACCESS      not-accessible
+      STATUS      mandatory
+      DESCRIPTION "This table provides a mechanism for determining which host 
+        addresses are present on a particular port on the device. The table is 
+        indexed on an object identifier which locates a physical port."
+      ::= {hostExtensions 2}
+
+hostPortToMacEntry OBJECT-TYPE
+      SYNTAX      HostPortToMacEntry
+      ACCESS      not-accessible
+      STATUS      mandatory
+      DESCRIPTION ""
+      INDEX       {hostLocation,hostAddressNumber}
+      ::= {hostPortToMacTable 1}
+
+HostPortToMacEntry ::= SEQUENCE {
+                  hostLocation               OBJECT IDENTIFIER,
+                  hostAddressNumber          INTEGER,
+                  hostPhyAddress             OCTET STRING
+                  }
+
+hostLocation OBJECT-TYPE
+      SYNTAX      OBJECT IDENTIFIER
+      ACCESS      not-accessible
+      STATUS      mandatory
+      DESCRIPTION "This object identifies a location in the system. The 
+        location is specified in terms of an object identifier which points to 
+        one of a number of locations. Valid OIDs are ifIndex and 
+        rptrPortGroupIndex. The OID simply identifies the type of the qualifier.
+         If the OID part is ifIndex then there will be a single integer index 
+        identifying an entry in the ifTable. If the OID is rptrPortGroupIndex 
+        then the qualifier will be two integers identifying the group (ie unit 
+        or slot) and the port within that group."
+      ::= {hostPortToMacEntry 1}
+
+hostAddressNumber OBJECT-TYPE
+      SYNTAX      INTEGER 
+      ACCESS      not-accessible
+      STATUS      mandatory
+      DESCRIPTION "This object allows several addresses to be associated with a 
+        single location. So for example if slot 2, port 5 has three addresses, 
+        this table will contain entries with the following indices:
+           rptrPortGroupIndex.2.5.1 rptrPortGroupIndex.2.5.2 rptrPortGroupIndex.
+            2.5.3
+
+"
+      ::= {hostPortToMacEntry 2}
+
+hostPhyAddress OBJECT-TYPE
+      SYNTAX      OCTET STRING  (SIZE(6))
+      ACCESS      read-only
+      STATUS      mandatory
+      DESCRIPTION "This is the physical address at the specified location."
+      ::= {hostPortToMacEntry 3}
+
+
+
+END

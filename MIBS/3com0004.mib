@@ -1,0 +1,48 @@
+A3COM0004-GENERIC DEFINITIONS ::= BEGIN
+
+
+	IMPORTS
+		generic FROM A3Com-products-MIB
+		OBJECT-TYPE FROM RFC-1212
+		;
+
+setup             OBJECT IDENTIFIER ::= {generic 2}
+sysLoader         OBJECT IDENTIFIER ::= {generic 3}
+security          OBJECT IDENTIFIER ::= {generic 4}
+gauges            OBJECT IDENTIFIER ::= {generic 5}
+asciiAgent        OBJECT IDENTIFIER ::= {generic 6}
+serialIf          OBJECT IDENTIFIER ::= {generic 7}
+repeaterMgmt      OBJECT IDENTIFIER ::= {generic 8}
+endStation        OBJECT IDENTIFIER ::= {generic 9}
+localSnmp         OBJECT IDENTIFIER ::= {generic 10}
+manager           OBJECT IDENTIFIER ::= {generic 11}
+unusedGeneric12   OBJECT IDENTIFIER ::= {generic 12}
+chassis           OBJECT IDENTIFIER ::= {generic 14}
+mrmResilience     OBJECT IDENTIFIER ::= {generic 15}
+tokenRing         OBJECT IDENTIFIER ::= {generic 16}
+multiRepeater     OBJECT IDENTIFIER ::= {generic 17}
+bridgeMgmt        OBJECT IDENTIFIER ::= {generic 18}
+fault             OBJECT IDENTIFIER ::= {generic 19}
+poll              OBJECT IDENTIFIER ::= {generic 20}
+powerSupply       OBJECT IDENTIFIER ::= {generic 21}
+securePort        OBJECT IDENTIFIER ::= {generic 22}
+alertLed          OBJECT IDENTIFIER ::= {generic 23}
+remoteControl     OBJECT IDENTIFIER ::= {generic 24}
+rmonExtensions    OBJECT IDENTIFIER ::= {generic 25}
+rfc1516extensions OBJECT IDENTIFIER ::= {generic 26}
+superStackIIconfig OBJECT IDENTIFIER ::= {generic 27}
+extendedIfInfo    OBJECT IDENTIFIER ::= {generic 28}
+a3ComVlan         OBJECT IDENTIFIER ::= {generic 29}
+vlanServerClient  OBJECT IDENTIFIER ::= {generic 30}
+segmentLoadBalancing  OBJECT IDENTIFIER ::= {generic 31}
+virtualFileSystem OBJECT IDENTIFIER ::= {generic 32}
+smartAutosensing  OBJECT IDENTIFIER ::= {generic 33}
+brasica2          OBJECT IDENTIFIER ::= {generic 34}
+smaVlanSupport    OBJECT IDENTIFIER ::= {generic 35}
+a3ComBridgeExt    OBJECT IDENTIFIER ::= {generic 36}
+igmpMIB           OBJECT IDENTIFIER ::= {generic 37}
+mibSummary        OBJECT IDENTIFIER ::= {generic 38}
+
+
+
+END

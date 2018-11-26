@@ -1,0 +1,2 @@
+select amount metric,case when amount=0 then 0 else 2 end value from (select count(1) amount from (select table_owner, table_name, to_date(substr(max(partition_name),-6,8),'yyyymm') datepartition from dba_tab_partitions where table_owner='SICOBE'  and table_name in ('PRODUCTIONFILLERSUMMARY','PRODUCTIONLINESUMMARY') group by table_owner, table_name ) where datepartition+1 < add_months(sysdate,1));
+exit
